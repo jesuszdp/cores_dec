@@ -9,7 +9,7 @@ $(function(){
       $('#span_tipo_unidad').html(opciones_filtros.tipos_unidades[opciones_seleccionadas.nivel_atencion][opciones_seleccionadas.tipo_unidad]);
     }
     $('#span_programa').html(opciones_filtros.programas_educativos[opciones_seleccionadas.anio][opciones_seleccionadas.programa_educativo]);
-    $('#th_tipo_asistente2').html("Asistentes Aprobados");
+    $('#th_tipo_asistente2').html("Ranking Intrarregional");
     if(opciones_seleccionadas.umae == '1' &&opciones_seleccionadas.delegacion == '')
     {
         $('.table_unidad').css('display', 'none');

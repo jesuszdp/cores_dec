@@ -3,7 +3,6 @@
     <div class="col-md-1"></div>
 
     <div class="col-md-10">
-
         <div id="grafica" class="">
 
         </div>
@@ -16,7 +15,7 @@
     <div class="col-md-1"></div>
 
     <div class="col-md-10">
-
+        <?php echo is_nivel_central($usuario['grupos']) ? '' : '<center style="font-weight: bold;">* Ranking Intrarregional (Delegaciones que pertenecen a la región)</center>'; ?>
         <table class="table">
             <tbody>
                 <td>Analizado por: <span id="span_nivel"></span></td>

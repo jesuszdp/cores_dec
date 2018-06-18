@@ -92,11 +92,11 @@ class Dec_model extends CI_Model
                     {
                         if($peticion['periodo'] == "1")
                         {
-                              $where_claus = "HI.trimestre='1' OR HI.trimestre='2'";
+                              $where_claus = "(HI.trimestre='1' OR HI.trimestre='2')";
                         }
                         if($peticion['periodo'] == "2")
                         {
-                              $where_claus = "HI.trimestre='3' OR HI.trimestre='4'";
+                              $where_claus = "(HI.trimestre='3' OR HI.trimestre='4')";
                         }
 
                     }
@@ -178,15 +178,16 @@ class Dec_model extends CI_Model
                         $where['HI.trimestre'] = $peticion['periodo'];
                     }
 
+                    $where_claus = "";
                     if($peticion['tipo_periodo'] == 'Semestral')
                     {
                         if($peticion['periodo'] == "1")
                         {
-                              $where_claus = "HI.trimestre='1' OR HI.trimestre='2'";
+                              $where_claus = "(HI.trimestre='1' OR HI.trimestre='2')";
                         }
                         if($peticion['periodo'] == "2")
                         {
-                              $where_claus = "HI.trimestre='3' OR HI.trimestre='4'";
+                              $where_claus = "(HI.trimestre='3' OR HI.trimestre='4')";
                         }
 
                     }
@@ -194,6 +195,7 @@ class Dec_model extends CI_Model
                     $parametros = array(
                         'select' => $select,
                         'join' => $join,
+                        'where_claus' => $where_claus,
                         'where' => $where,
                         'group_by' => $group_by,
                         'order_by' => $order_by
@@ -351,16 +353,16 @@ class Dec_model extends CI_Model
                     {
                         $where['HI.trimestre'] = $peticion['periodo'];
                     }
-
+                    $where_claus = "";
                     if($peticion['tipo_periodo'] == 'Semestral')
                     {
                         if($peticion['periodo'] == "1")
                         {
-                              $where_claus = "HI.trimestre='1' OR HI.trimestre='2'";
+                              $where_claus = "(HI.trimestre='1' OR HI.trimestre='2')";
                         }
                         if($peticion['periodo'] == "2")
                         {
-                              $where_claus = "HI.trimestre='3' OR HI.trimestre='4'";
+                              $where_claus = "(HI.trimestre='3' OR HI.trimestre='4')";
                         }
 
                     }
@@ -372,6 +374,7 @@ class Dec_model extends CI_Model
                     $parametros = array(
                         'select' => $select,
                         'join' => $join,
+                        'where_claus' => $where_claus,
                         'like' => $like,
                         'where' => $where
                     );
@@ -406,16 +409,16 @@ class Dec_model extends CI_Model
                     {
                         $where['HI.trimestre'] = $peticion['periodo'];
                     }
-
+                    $where_claus = "";
                     if($peticion['tipo_periodo'] == 'Semestral')
                     {
                         if($peticion['periodo'] == "1")
                         {
-                              $where_claus = "HI.trimestre='1' OR HI.trimestre='2'";
+                              $where_claus = "(HI.trimestre='1' OR HI.trimestre='2')";
                         }
                         if($peticion['periodo'] == "2")
                         {
-                              $where_claus = "HI.trimestre='3' OR HI.trimestre='4'";
+                              $where_claus = "(HI.trimestre='3' OR HI.trimestre='4')";
                         }
 
                     }
@@ -427,6 +430,7 @@ class Dec_model extends CI_Model
                     $parametros = array(
                         'select' => $select,
                         'join' => $join,
+                        'where_claus' => $where_claus,
                         'like' => $like,
                         'where' => $where
                     );
@@ -532,8 +536,9 @@ class Dec_model extends CI_Model
          {
              $this->db->limit($params['limit']);
          }
-
-         $query = $this->db->get();;
+         //pr($this->db->result_id->queryString);
+         $query = $this->db->get();
+         //pr($this->db->last_query());
          $salida = $query->result_array();
          $query->free_result();
          $this->db->flush_cache();

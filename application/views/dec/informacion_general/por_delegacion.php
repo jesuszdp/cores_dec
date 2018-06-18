@@ -556,7 +556,7 @@ $(function(){
     }
     if($('#tipo_periodo')[0].value != "")
     {
-      switch ($('#tipo_periodo')[0].value) {
+      /*switch ($('#tipo_periodo')[0].value) {
         case "Trimestral":
           //console.log("Trimestral");
           $('#secPeriodo').show();
@@ -577,7 +577,9 @@ $(function(){
           $('#secPeriodo').hide();
           break;
         default:
-      }
+      }*/
+      mostrar_periodos(document.getElementById('tipo_periodo'));
+      setTimeout(function(){$('#periodo').val(periodo)}, 500);
     }
     if(usuario.central){
       if($('#region')[0].value != "" && $('#delegacion')[0].value == "")

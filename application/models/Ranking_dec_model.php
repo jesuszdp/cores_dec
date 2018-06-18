@@ -73,13 +73,18 @@ class Ranking_dec_model extends CI_Model
                   )
               );
               $where = array('HI.anio' => Ranking_dec_model::ANIO,'HI.denominador >' => 0);
-              $where_claus = "(UI.nivel_atencion='1' OR UI.nivel_atencion='2')";
+              $where_claus = null;//"(UI.nivel_atencion='1' OR UI.nivel_atencion='2')";
               $group_by = array('PP.nombre','HI.id_programa_proyecto');
               $order_by = array('field' => 'programados', 'direction'=>'desc');
               $like = [];
               if($peticion['region'] != "Todos")
               {
                   $where['UI.id_region'] =  $peticion['region'];
+              }
+
+              if($peticion['nivel'] != "")
+              {
+                  $where['UI.nivel_atencion'] =  $peticion['nivel'];
               }
 
               if($peticion['tipos_unidades'] != "Todos")
@@ -374,7 +379,7 @@ class Ranking_dec_model extends CI_Model
          {
              $this->db->limit($params['limit']);
          }
-
+         //pr($this->db->result_id->queryString);
          $query = $this->db->get();
          $salida = $query->result_array();
          $query->free_result();

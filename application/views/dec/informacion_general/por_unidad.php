@@ -199,7 +199,7 @@ $(function(){
   }
   if($('#tipo_periodo')[0].value != "")
   {
-    var anios = [2016,2017,2018];
+    /*var anios = [2016,2017,2018];
     switch ($('#tipo_periodo')[0].value) {
       case "Trimestral":
         //console.log("Trimestral");
@@ -222,7 +222,9 @@ $(function(){
         break;
       default:
         console.log("Default");
-    }
+    }*/
+    mostrar_periodos(document.getElementById('tipo_periodo'));
+    setTimeout(function(){$('#periodo').val(periodo)}, 500);
   }
 })
 </script>

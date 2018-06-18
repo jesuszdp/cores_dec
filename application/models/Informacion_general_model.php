@@ -230,6 +230,7 @@ class Informacion_general_model extends CI_Model
         $this->db->join('catalogos.subcategorias sub', 'sub.id_subcategoria=gc.id_subcategoria AND sub.activa=CAST(1 as boolean)');
         //$this->db->limit(50);
         $query = $this->db->get('hechos.hechos_implementaciones_alumnos hia'); //Obtener conjunto de registros
+        //pr($this->db->result_id->queryString);
         $resultado = $query->result_array();
         //pr($this->db->last_query()); pr($params); //exit();
         $query->free_result(); //Libera la memoria

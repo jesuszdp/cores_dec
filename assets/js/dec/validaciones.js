@@ -9,7 +9,7 @@ $(function () {
           //console.log("Name: ", elemento.name);
           if(elemento.name == 'tipo_periodo')
           {
-            if(elemento.value == 'anual'){
+            if(elemento.value == 'Anual'){
 
             }else{
                 campos.push(elemento.name);

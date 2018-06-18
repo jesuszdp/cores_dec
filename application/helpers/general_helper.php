@@ -428,7 +428,7 @@ if (!function_exists('is_nivel_central'))
         $salida = false;
         foreach ($grupos as $grupo){
             $id = $grupo['id_grupo'];
-            if($id == 3 || $id == 2 || $id == 1 || $id == 9){
+            if($id == 3 || $id == 2 || $id == 1 || $id == 9 ){
                 $salida = true;
             }
         }

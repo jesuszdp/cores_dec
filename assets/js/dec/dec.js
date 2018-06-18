@@ -100,8 +100,8 @@ function mostrar_periodos(tipo_periodo)
       $('#periodo').append($('<option>', { value: "", text: "Seleccione..."}));
       $('#periodo').append($('<option>', { value: 1, text: "Enero-Marzo"}));
       $('#periodo').append($('<option>', { value: 2, text: "Abril-Junio"}));
-      $('#periodo').append($('<option>', { value: 2, text: "Julio-Septiembre"}));
-      $('#periodo').append($('<option>', { value: 2, text: "Octubre-Diciembre"}));
+      $('#periodo').append($('<option>', { value: 3, text: "Julio-Septiembre"}));
+      $('#periodo').append($('<option>', { value: 4, text: "Octubre-Diciembre"}));
       break;
     case "Semestral":
       $('#secPeriodo').show();
