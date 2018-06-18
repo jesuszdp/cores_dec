@@ -30,7 +30,8 @@ class Informacion_general extends MY_Controller
         //pr($_SESSION['usuario']);
         $datos['lenguaje'] = $this->lang->line('interface')['informacion_general']+$this->lang->line('interface')['general'];
         $cat_list = new Catalogo_listado(); //Obtener catálogos
-        $condicion_na = ($this->configuracion_grupos->obtener_is_umae()) ? '(nivel_atencion<>0 AND nivel_atencion=3)' : 'nivel_atencion<>0 AND nivel_atencion<>3'; ///Establecer condicionales para mostrar niveles de atención
+        //$condicion_na = ($this->configuracion_grupos->obtener_is_umae()) ? '(nivel_atencion<>0 AND nivel_atencion=3)' : 'nivel_atencion<>0 AND nivel_atencion<>3'; ///Establecer condicionales para mostrar niveles de atención
+        $condicion_na = ($this->configuracion_grupos->obtener_is_umae()) ? 'nivel_atencion<>0' : 'nivel_atencion<>0'; ///Establecer condicionales para mostrar niveles de atención
         $nivel_atencion = $cat_list->obtener_catalogos(array(Catalogo_listado::UNIDADES_INSTITUTO=>array('llave'=>'DISTINCT(COALESCE(nivel_atencion,0))', 'valor'=>"case when nivel_atencion=1 then 'Primer nivel' when nivel_atencion=2 then 'Segundo nivel' when nivel_atencion=3 then 'Tercer nivel' else 'Nivel no disponible' end", 'orden'=>'llave', 'alias'=>'nivel_atencion', 'condicion'=>$condicion_na), Catalogo_listado::IMPLEMENTACIONES=>array('valor'=>'anio', 'llave'=>'DISTINCT(anio)', 'orden'=>'llave DESC'))); //Obtener nivel de atención en otra llamada debido a que tiene el mismo indice que UMAE
         $configuracion = $this->configuracion_grupos->obtener_tipos_busqueda($datos['lenguaje']);
         $datos['catalogos'] = $cat_list->obtener_catalogos($configuracion['catalogos']); //Catalogo_listado::PERIODO
@@ -395,12 +396,14 @@ class Informacion_general extends MY_Controller
     }
 
     public function calcular_totales_generales(){
+        //pr('calcular_totales_generales');
         if($this->input->is_ajax_request()){ //Solo se accede al método a través de una petición ajax
             //if(!is_null($this->input->post())){ //Se verifica que se haya recibido información por método post
                 $resultado = array('total'=>array());
 
                 if(!is_null($this->session->userdata('usuario'))){
                     $datos_busqueda = $this->input->post(null, true); //Datos del formulario se envían para generar la consulta
+                    //pr($datos_busqueda);
 
                     $conditions = $this->obtener_condicionales();
 
@@ -489,11 +492,14 @@ class Informacion_general extends MY_Controller
     }*/
 
     public function calcular_totales(){
+        //pr('calcular_totales');
         if($this->input->is_ajax_request()){ //Solo se accede al método a través de una petición ajax
             if(!is_null($this->input->post())){ //Se verifica que se haya recibido información por método post
 
                 $datos_busqueda = $this->input->post(null, true); //Datos del formulario se envían para generar la consulta
+                //pr($datos_busqueda);
                 $tipos_busqueda = $this->config->item('tipos_busqueda');
+                //pr($tipos_busqueda);
 
                 $extra = array();
                 switch ($datos_busqueda['tipos_busqueda']) {

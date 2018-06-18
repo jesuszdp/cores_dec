@@ -220,16 +220,18 @@ class Informacion_general_model extends CI_Model
         //$this->db->join('catalogos.meses mes', 'mes.id_mes=EXTRACT(MONTH FROM imp.fecha_fin)');
         $this->db->join('catalogos.cursos cur', 'cur.id_curso=imp.id_curso');
         $this->db->join('catalogos.tipos_cursos tc', 'tc.id_tipo_curso=cur.id_tipo_curso AND tc.activo=CAST(1 as boolean)');
-        $this->db->join('catalogos.unidades_instituto uni', 'uni.id_unidad_instituto=hia.id_unidad_instituto AND uni.anio='.$params['anio'], 'left');
-        $this->db->join('catalogos.delegaciones del', 'del.id_delegacion=uni.id_delegacion', 'left');
+        $this->db->join('catalogos.unidades_instituto uni', 'uni.id_unidad_instituto=hia.id_unidad_instituto AND uni.anio='.$params['anio']);
+        $this->db->join('catalogos.delegaciones del', 'del.id_delegacion=uni.id_delegacion');
         //$this->db->join('catalogos.regiones reg', 'reg.id_region=del.id_region', 'left');
+        $this->db->join('catalogos.tipos_unidades tu', 'uni.id_tipo_unidad = tu.id_tipo_unidad');
         $this->db->join('catalogos.regiones reg', 'reg.id_region=del.id_region');
-        $this->db->join('catalogos.categorias cat', 'cat.id_categoria=hia.id_categoria', 'left');
-        $this->db->join('catalogos.grupos_categorias gc', 'gc.id_grupo_categoria=cat.id_grupo_categoria AND gc.activa=CAST(1 as boolean)', 'left');
+        $this->db->join('catalogos.categorias cat', 'cat.id_categoria=hia.id_categoria');
+        $this->db->join('catalogos.grupos_categorias gc', 'gc.id_grupo_categoria=cat.id_grupo_categoria AND gc.activa=CAST(1 as boolean)');
         //$this->db->join('catalogos.subcategorias sub', 'sub.id_subcategoria=gc.id_subcategoria AND sub.activa=CAST(1 as boolean)', 'left');
         $this->db->join('catalogos.subcategorias sub', 'sub.id_subcategoria=gc.id_subcategoria AND sub.activa=CAST(1 as boolean)');
         //$this->db->limit(50);
         $query = $this->db->get('hechos.hechos_implementaciones_alumnos hia'); //Obtener conjunto de registros
+        //pr('calcular_totales modelo');
         //pr($this->db->result_id->queryString);
         $resultado = $query->result_array();
         //pr($this->db->last_query()); pr($params); //exit();
