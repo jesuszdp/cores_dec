@@ -20,8 +20,7 @@
                 <div class="row form-group">       
                     <?php
 //pr($usuario);
-                    if (isset($usuario['central']))
-                    {
+                    if (isset($usuario['central'])) {
                         ?>                                      
                         <div class="col-md-4">
                             <div class="input-group input-group-sm">
@@ -31,12 +30,15 @@
                                         array('id' => 'umae',
                                             'type' => 'dropdown',
                                             'first' => array('' => 'Seleccione...'),
+                                            'value' => (isset($umae_delegacion) ? $umae_delegacion : ''),
                                             'options' => array(0 => 'Delegacional', 1 => 'UMAE'),
                                             'attributes' => array(
                                                 'class' => 'form-control  form-control input-sm',
                                                 'data-toggle' => 'tooltip',
                                                 'data-placement' => 'top',
-                                                'title' => 'UMAE')
+                                                'title' => 'UMAE',
+                                                'onchange' => 'cmbox_comparativa();'
+                                            )
                                         )
                                 );
                                 ?>
@@ -60,7 +62,7 @@
                                             'data-toggle' => 'tooltip',
                                             'data-placement' => 'top',
                                             'title' => 'Tipo de comparativa',
-                                            'onchange' => 'cmbox_comparativa()')
+                                            'onchange' => 'cmbox_comparativa();')
                                     )
                             );
                             ?>
@@ -72,8 +74,7 @@
                 ?>
                 <div id="area_comparativa">
                     <?php
-                    if (isset($vista))
-                    {
+                    if (isset($vista)) {
                         echo $vista;
                     }
                     ?>
@@ -88,54 +89,49 @@
             <!-- filtros-->
 
             <!--fin filtros-->
-            <?php
-            $inscritos = "";
-            $aprobados = "";
-            $suspendidos = "";
-            $no_acceso = "";
-            $etm = "";
-            $chart_title = "Comparativa de regiones";
-            $filtros = "";
-            if (isset($comparativa) && is_array($comparativa) && !empty($comparativa))
-            {
-                foreach ($comparativa as $region)
-                {
-                    $class_region = '';
-                    if ($region['region'] == $usuario['name_region'])
-                    {
-                        $class_region = 'current_comparativa_region';
-                        $region['region'] = '<strong>* ' . $region['region'] . '</strong>';
-                    }
+<?php
+$inscritos = "";
+$aprobados = "";
+$suspendidos = "";
+$no_acceso = "";
+$etm = "";
+$chart_title = "Comparativa de regiones";
+$filtros = "";
+if (isset($comparativa) && is_array($comparativa) && !empty($comparativa)) {
+    foreach ($comparativa as $region) {
+        $class_region = '';
+        if ($region['region'] == $usuario['name_region']) {
+            $class_region = 'current_comparativa_region';
+            $region['region'] = '<strong>* ' . $region['region'] . '</strong>';
+        }
 //                     pr($region['region'].' '.$usuario['name_region']);
-                    $inscritos .= "<tr class='" . $class_region . "'>
+        $inscritos .= "<tr class='" . $class_region . "'>
                               <th>" . $region["region"] . "</th>
                               <td>" . $region["inscritos"] . "</td>
                             </tr>";
-                    $aprobados .= "<tr class='" . $class_region . "'>
+        $aprobados .= "<tr class='" . $class_region . "'>
                               <th>" . $region["region"] . "</th>
                               <td>" . $region["aprobados"] . "</td>
                             </tr>";
-                    $suspendidos .= "<tr class='" . $class_region . "'>
+        $suspendidos .= "<tr class='" . $class_region . "'>
                               <th>" . $region["region"] . "</th>
                               <td>" . $region["suspendidos"] . "</td>
                             </tr>";
-                    $no_acceso .= "<tr class='" . $class_region . "'>
+        $no_acceso .= "<tr class='" . $class_region . "'>
                               <th>" . $region["region"] . "</th>
                               <td>" . ($region["nunca_entraron"]) . "</td>
                             </tr>";
-                    $etm .= "<tr class='" . $class_region . "'>
+        $etm .= "<tr class='" . $class_region . "'>
                               <th>" . $region["region"] . "</th>
                               <td>" . $region["etm"] . "</td>
                             </tr>";
-                    if (isset($region["tipo_curso"]))
-                    {
-                        $filtros = "Tipo de curso: " . $region["tipo_curso"];
-                    } elseif (isset($region["perfil"]))
-                    {
-                        $filtros = "Perfil: " . $region["perfil"];
-                    }
-                }
-                ?>
+        if (isset($region["tipo_curso"])) {
+            $filtros = "Tipo de curso: " . $region["tipo_curso"];
+        } elseif (isset($region["perfil"])) {
+            $filtros = "Perfil: " . $region["perfil"];
+        }
+    }
+    ?>
                 <!--Reporte-->
                 <div class="row">
                     <div class="col-lg-12 col-md-12">
@@ -177,7 +173,7 @@
                                             </li>
                                         </ul>
                                         <p class="category">
-                                            <?php echo $filtros; ?>
+    <?php echo $filtros; ?>
                                         </p>
                                     </div>
                                 </div>
@@ -199,7 +195,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php echo $inscritos; ?>
+    <?php echo $inscritos; ?>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -220,7 +216,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php echo $aprobados; ?>
+    <?php echo $aprobados; ?>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -241,7 +237,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php echo $suspendidos; ?>
+    <?php echo $suspendidos; ?>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -260,7 +256,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php echo $no_acceso; ?>
+    <?php echo $no_acceso; ?>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -281,7 +277,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php echo $etm; ?>
+    <?php echo $etm; ?>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -293,14 +289,14 @@
                 </div>
                 <!--script src="<?php echo base_url(); ?>assets/hightcharts/highcharts.js" type="text/javascript"></script>
                 <script src="<?php echo base_url(); ?>assets/hightcharts/exporting.js" type="text/javascript"></script-->
-                <?php echo js("chart_options.js"); ?>
-                <?php
-                $titulo1 = 'Número de alumnos inscritos ';
-                $titulo2 = 'Número de alumnos aprobados ';
-                $titulo3 = 'Porcentaje de eficiencia terminal modificada ';
-                $titulo4 = 'Número de alumnos no aprobados ';
-                $titulo5 = 'Número de alumnos que nunca entraron ';
-                ?>
+    <?php echo js("chart_options.js"); ?>
+    <?php
+    $titulo1 = 'Número de alumnos inscritos ';
+    $titulo2 = 'Número de alumnos aprobados ';
+    $titulo3 = 'Porcentaje de eficiencia terminal modificada ';
+    $titulo4 = 'Número de alumnos no aprobados ';
+    $titulo5 = 'Número de alumnos que nunca entraron ';
+    ?>
                 <script type="text/javascript">
                     function chart(id_chart, tabla, titulo, ytext, color) {
                         Highcharts.chart(id_chart, {
@@ -347,11 +343,10 @@
                         chart("chrt_etm", "table_etm", titulo3, "Porcentaje de Eficiencia Terminal Modificada", ['#f3b510']);
                     });
                 </script>
-                <?php
-            } elseif (isset($comparativa) && count($comparativa) == 0)
-            {
-                // var_dump($comparativa);
-                ?>
+    <?php
+} elseif (isset($comparativa) && count($comparativa) == 0) {
+    // var_dump($comparativa);
+    ?>
 
                 <div class="alert alert-warning">
                     <span>
@@ -367,11 +362,11 @@
     </div>
 </div>
 </div>
-<?php
-echo js("comparativa/region.js");
+            <?php
+            echo js("comparativa/region.js");
 // pr($texts);
 // pr($comparativa);
 // pr($catalogos);
 // pr($filters);
-?>
+            ?>
   

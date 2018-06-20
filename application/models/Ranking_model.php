@@ -80,7 +80,7 @@ class Ranking_model extends MY_Model
         $this->db->join('catalogos.cursos E ', ' E.id_curso = D.id_curso', 'inner');
         $this->db->join('catalogos.delegaciones A', 'B.id_delegacion=A.id_delegacion', 'inner');
         $this->db->join('catalogos.regiones reg', 'reg.id_region=A.id_region', 'inner');
-        $this->db->join('catalogos.categorias cat', 'cat.id_categoria=C.id_categoria', 'left');
+        $this->db->join('catalogos.categorias cat', 'cat.id_categoria=C.id_categoria', 'inner');
         $this->db->join('catalogos.grupos_categorias gc', 'gc.id_grupo_categoria=cat.id_grupo_categoria AND gc.activa', 'left');
         $this->db->join('catalogos.subcategorias sub', 'sub.id_subcategoria=gc.id_subcategoria AND sub.activa', 'inner');
         $this->db->join('catalogos.programas_proyecto G ', ' G.id_programa_proyecto = E.id_programa_proyecto', 'inner');
@@ -175,6 +175,7 @@ class Ranking_model extends MY_Model
             $this->db->group_by('A.nombre_grupo_delegacion');
         }
         $this->db->select($select);
+//        $this->db->order_by(A.nombre_grupo_delegacion);
         $datos = $this->db->get('catalogos.delegaciones A')->result_array();
 //        pr($this->db->last_query());
         $this->db->reset_query();

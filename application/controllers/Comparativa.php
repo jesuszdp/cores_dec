@@ -7,15 +7,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @version : 1.0.0
  * @autor : Miguel Guagnelli
  */
-class Comparativa extends MY_Controller
-{
+class Comparativa extends MY_Controller {
 
     /**
      * Carga de clases para el acceso a base de datos y obtencion de las variables de session
      * @access 		: public
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         $this->load->helper(array('form', 'general'));
         $this->load->library('form_complete');
@@ -27,8 +25,7 @@ class Comparativa extends MY_Controller
         $this->load->library('Catalogo_listado');
     }
 
-    public function index()
-    {
+    public function index() {
         /*
           1. generar plantilla con gRAFICO
           2. generar consulta
@@ -51,28 +48,23 @@ class Comparativa extends MY_Controller
         $this->template->getTemplate(null, "tc_template/index.tpl.php");
     }
 
-    public function unidades()
-    {
+    public function unidades() {
         $this->load->model('Ranking_model', 'ranking');
         $output['usuario'] = $this->session->userdata('usuario');
         $output['comparativas'] = $this->comparativa->get_tipos_comparativas();
 
         $output['usuario'] = $this->session->userdata('usuario');
 //        pr($output['usuario']);
-        if ($this->input->post('vista'))
-        {
+        if ($this->input->post('vista')) {
             $filtros = $this->input->post();
-            if (!isset($filtros['periodo']) || $filtros['periodo'] == "")
-            {
+            if (!isset($filtros['periodo']) || $filtros['periodo'] == "") {
                 $periodo = date("Y");
-            } else
-            {
+            } else {
                 $periodo = $filtros['periodo'];
             }
             $output['periodo'] = $periodo;
             $filtros['agrupamiento'] = 1; //activamos el agrupamiento
-            if (is_nivel_central($output['usuario']['grupos']) && $this->input->post('agrupamiento') != null && $this->input->post('agrupamiento') == 0)
-            {
+            if (is_nivel_central($output['usuario']['grupos']) && $this->input->post('agrupamiento') != null && $this->input->post('agrupamiento') == 0) {
                 $filtros['agrupamiento'] = 0; // desactivamos el agrupamiento solo si somos nivel central
             }
 
@@ -81,25 +73,20 @@ class Comparativa extends MY_Controller
                 Catalogo_listado::SUBCATEGORIAS => array('condicion' => 'id_subcategoria > 1'),
                 Catalogo_listado::TIPOS_CURSOS => array('condicion' => 'activo = true'))
             );
-            if ($this->input->post('nivel') != null)
-            {
+            if ($this->input->post('nivel') != null) {
                 $nivel = $this->input->post('nivel', true);
                 $output['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades(false, '0', $nivel), 'id_tipo_unidad', 'nombre');
-            } else
-            {
+            } else {
                 $output['tipos_unidades'] = [];
-                if (isset($output['usuario']['nivel_atencion']) && $output['usuario']['nivel_atencion'] != null)
-                {
+                if (isset($output['usuario']['nivel_atencion']) && $output['usuario']['nivel_atencion'] != null) {
                     $output['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades(false, '0', $output['usuario']['nivel_atencion']), 'id_tipo_unidad', 'nombre');
                 }
             }
-            if ($this->input->post('perfil') != null)
-            {
+            if ($this->input->post('perfil') != null) {
                 $this->load->model('Buscador_model', 'buscador');
                 $filtros_['subcategoria'] = $this->input->post('perfil', true);
                 $output['grupos_categorias'] = dropdown_options($this->buscador->get_grupos_categorias($filtros_), 'id_grupo_categoria', 'nombre');
-            } else
-            {
+            } else {
                 $output['grupos_categorias'] = [];
             }
             $output['agrupamiento'] = $filtros['agrupamiento'];
@@ -107,8 +94,7 @@ class Comparativa extends MY_Controller
             $output['tipo_unidad'] = $output['usuario']['id_tipo_unidad'];
             $output['periodos'] = dropdown_options($this->ranking->get_periodos(), 'periodo', 'periodo');
             $output['reportes'] = $this->comparativa->get_tipos_reportes();
-            switch ($this->input->post('vista', true))
-            {
+            switch ($this->input->post('vista', true)) {
                 case 1:
                     $vista = 'unidad_tipo_curso';
                     break;
@@ -118,18 +104,15 @@ class Comparativa extends MY_Controller
             }
             $output['vista'] = $this->load->view('comparative/' . $vista, $output, true);
         }
-        if ($this->input->post('tipo_comparativa'))
-        {
+        if ($this->input->post('tipo_comparativa')) {
             $output['datos'] = $datos = $this->comparativa->get_comparar_unidad($filtros);
             $output['tabla'] = $this->load->view('comparative/tabla.tpl.php', $output, true);
             $output['grafica'] = $this->load->view('comparative/grafica.tpl.php', $output, true);
         }
 
-        if ($this->input->is_ajax_request())
-        {
+        if ($this->input->is_ajax_request()) {
             echo $output['vista'];
-        } else
-        {
+        } else {
 
             $view = $this->load->view('comparative/unidades', $output, true);
             $this->template->setDescripcion($this->mostrar_datos_generales());
@@ -139,26 +122,21 @@ class Comparativa extends MY_Controller
         }
     }
 
-    public function umae()
-    {
+    public function umae() {
         $this->load->model('Ranking_model', 'ranking');
         $output['usuario'] = $this->session->userdata('usuario');
         $output['comparativas'] = $this->comparativa->get_tipos_comparativas();
 
         $output['usuario'] = $this->session->userdata('usuario');
-        if ($this->input->post('vista'))
-        {
+        if ($this->input->post('vista')) {
             $filtros = $this->input->post();
-            if (!isset($filtros['periodo']) || $filtros['periodo'] == "")
-            {
+            if (!isset($filtros['periodo']) || $filtros['periodo'] == "") {
                 $periodo = date("Y");
-            } else
-            {
+            } else {
                 $periodo = $filtros['periodo'];
             }
             $filtros['agrupamiento'] = 1; //activamos el agrupamiento
-            if (is_nivel_central($output['usuario']['grupos']) && $this->input->post('agrupamiento') != null && $this->input->post('agrupamiento') == 0)
-            {
+            if (is_nivel_central($output['usuario']['grupos']) && $this->input->post('agrupamiento') != null && $this->input->post('agrupamiento') == 0) {
                 $filtros['agrupamiento'] = 0; // desactivamos el agrupamiento solo si somos nivel central
                 $opciones_umae = array(
                     'llave' => 'id_unidad_instituto',
@@ -167,8 +145,7 @@ class Comparativa extends MY_Controller
                     'group' => array('id_unidad_instituto', 'nombre'),
                     'orden' => 'nombre'
                 );
-            } else
-            {
+            } else {
                 $opciones_umae = array(
                     'llave' => 'nombre_unidad_principal',
                     'valor' => 'nombre_unidad_principal',
@@ -189,13 +166,11 @@ class Comparativa extends MY_Controller
                     'condicion' => 'nivel = 3'
                 ))
             );
-            if ($this->input->post('perfil') != null)
-            {
+            if ($this->input->post('perfil') != null) {
                 $this->load->model('Buscador_model', 'buscador');
                 $filtros_['subcategoria'] = $this->input->post('perfil', true);
                 $output['subperfiles'] = dropdown_options($this->buscador->get_grupos_categorias($filtros_), 'id_grupo_categoria', 'nombre');
-            } else
-            {
+            } else {
                 $output['subperfiles'] = [];
             }
             $output['agrupamiento'] = $filtros['agrupamiento'];
@@ -204,8 +179,7 @@ class Comparativa extends MY_Controller
             //$output['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades(false), 'id_tipo_unidad', 'nombre');
             $output['periodos'] = dropdown_options($this->ranking->get_periodos(), 'periodo', 'periodo');
             $output['reportes'] = $this->comparativa->get_tipos_reportes();
-            switch ($this->input->post('vista', true))
-            {
+            switch ($this->input->post('vista', true)) {
                 case 1:
                     $vista = 'umae_tipo_curso';
                     break;
@@ -215,18 +189,15 @@ class Comparativa extends MY_Controller
             }
             $output['vista'] = $this->load->view('comparative/' . $vista, $output, true);
         }
-        if ($this->input->post('tipo_comparativa'))
-        {
+        if ($this->input->post('tipo_comparativa')) {
             $output['datos'] = $datos = $this->comparativa->get_comparar_umae($filtros);
             $output['tabla'] = $this->load->view('comparative/tabla.tpl.php', $output, true);
             $output['grafica'] = $this->load->view('comparative/grafica.tpl.php', $output, true);
         }
 
-        if ($this->input->is_ajax_request())
-        {
+        if ($this->input->is_ajax_request()) {
             echo $output['vista'];
-        } else
-        {
+        } else {
 
             $view = $this->load->view('comparative/umae', $output, true);
             $this->template->setDescripcion($this->mostrar_datos_generales());
@@ -236,27 +207,35 @@ class Comparativa extends MY_Controller
         }
     }
 
-    public function region($num = null, $year = null, $type = null, $umae = null, $niv = null, $tunidad = null, $sc = null)
-    {
+    public function region($num = null, $year = null, $type = null, $umae = null, $niv = null, $tunidad = null, $sc = null) {
+//        pr($num . ' ' . $year . ' ' . $type . ' umae->' . $umae . ' niv->' . $niv . ' ' . $tunidad . ' ' . $sc);
+//        pr($this->input->get(null, true));
+//        pr($this->input->post('umae'));
         $this->load->model('Buscador_model', 'buscador');
         $this->load->model('Ranking_model', 'ranking');
         $usuario = $this->session->userdata('usuario');
+//        pr($usuario);
+
         $data['usuario'] = $usuario;
-        if ($usuario['umae'])
-        {
+        if ($usuario['umae']) {
             $data['umae'] = true;
-        } else
-        {
+        } else {
             $data['umae'] = false;
         }
-        if (is_nivel_central($data['usuario']['grupos']))
-        {
+        if (is_nivel_central($data['usuario']['grupos'])) {
             $data['usuario']['central'] = true;
-            if ($this->input->post('umae') != null)
-            {
-//                pr($this->input->post());
-                switch ($this->input->post('umae', true))
-                {
+            if (!is_null($this->input->post('umae', true))) {
+                switch ($this->input->post('umae', true)) {
+                    case 0:
+                    case '0':
+                        $data['umae'] = false;
+                        break;
+                    default :
+                        $data['umae'] = true;
+                        break;
+                }
+            } else if ($umae != null) {
+                switch ($umae) {
                     case 0:
                     case '0':
                         $data['umae'] = false;
@@ -274,10 +253,8 @@ class Comparativa extends MY_Controller
         //4. obtener datos para campos y campos relacionados
         //5. aplicar filtros
 
-        if ($this->input->post('view') != null)
-        {
-            switch ($this->input->post('view', true))
-            {
+        if ($this->input->post('view') != null) {
+            switch ($this->input->post('view', true)) {
                 case 1:
                     $accion = 'tipo_curso';
                     break;
@@ -305,59 +282,51 @@ class Comparativa extends MY_Controller
         ));
 //        pr($data['umae']?'true':'false');
         $data['niveles'] = $this->comparativa->get_niveles($data['umae']);
-        $data['tipo_unidad'] = $data['usuario']['id_tipo_unidad'];
-        if ($this->input->post('nivel') != null)
-        {
+
+        $data['tipo_unidad'] = $data['usuario']['id_tipo_unidad']; //Tipo de unidad del usuario
+        if (!is_null($tunidad)) {//Tipo de unidad 
+            $data['tipo_unidad'] = $tunidad;
+        }
+        if ($this->input->post('nivel') != null) {
             $nivel = $this->input->post('nivel', true);
             $data['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades(false, '0', $nivel), 'id_tipo_unidad', 'nombre');
-        } else
-        {
+        } else {
 
             $data['tipos_unidades'] = [];
         }
-        if ($this->input->post('perfil') != null)
-        {
+        if ($this->input->post('perfil') != null) {
             $filtros_['subcategoria'] = $this->input->post('perfil', true);
             $data['subperfiles'] = dropdown_options($this->buscador->get_grupos_categorias($filtros_), 'id_grupo_categoria', 'nombre');
-        } else
-        {
+        } else {
             $data['subperfiles'] = [];
         }
         $data['periodos'] = dropdown_options($this->ranking->get_periodos(), 'periodo', 'periodo');
 
 
-        if (is_null($umae) && !is_nivel_central($usuario['grupos']))
-        {
-            $umae = $usuario['umae'] ? 1 : 0;
-        }
+//        if (is_null($umae) && !is_nivel_central($usuario['grupos'])) {
+//            $umae = $usuario['umae'] ? 1 : 0;
+//        }
 
-        if (!is_null($num) && !is_null($year) && !is_null($type))
-        {
+        if (!is_null($num) && !is_null($year) && !is_null($type)) {
             //$data["filters"]["num"] = $data["filters"]["type"] == 'tc' ? ;
-            if ($accion != null && $accion == 'analizar')
-            {
-                $data["comparativa"] = $this->comparativa->get_comparativa_region($num, $year, $type, $umae);
+            if ($accion != null && $accion == 'analizar') {
+                $data["comparativa"] = $this->comparativa->get_comparativa_region($num, $year, $type, $data['umae'], $data['tipo_unidad']);
                 $data['periodo'] = $year;
                 $data['subperfil'] = $num;
                 $data['curso'] = $num;
                 $data['nivel'] = $niv;
                 $data['subcategoria'] = $sc;
-                if(!is_null($tunidad) && $tunidad != null){
-                    $data['tipo_unidad'] = $tunidad;
-                }
-                if (!is_null($sc) && $sc != null)
-                {
+                if (!is_null($sc) && $sc != null) {
                     $filtros_ = [];
                     $filtros_['subcategoria'] = $sc;
                     $data['subperfiles'] = dropdown_options($this->buscador->get_grupos_categorias($filtros_), 'id_grupo_categoria', 'nombre');
                 }
                 $data['tcomparativa'] = $type == Comparativa_model::TIPO_CURSO ? 1 : 2;
-                if ($niv != null)
-                {
-                    $data['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades(false, '0', $niv), 'id_tipo_unidad', 'nombre');
+                $data['umae_delegacion'] = $umae;
+                if ($niv != null) {
+                    $data['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades($data['umae'], '0', $niv), 'id_tipo_unidad', 'nombre');
                 }
-                switch ($type)
-                {
+                switch ($type) {
                     case 'tc':
                         $data['vista'] = $this->load->view('comparative/region_tipo_curso', $data, true);
                         break;
@@ -370,8 +339,7 @@ class Comparativa extends MY_Controller
 //            pr($usuario);
         }
 
-        switch ($accion)
-        {
+        switch ($accion) {
             case 'perfil':
                 $this->load->view('comparative/region_perfil', $data);
                 break;
@@ -380,8 +348,7 @@ class Comparativa extends MY_Controller
                 break;
             case 'analizar':
             default :
-                if (!$this->input->is_ajax_request())
-                {
+                if (!$this->input->is_ajax_request()) {
                     $view = $this->load->view("comparative/region_v2.tpl.php", $data, TRUE);
                     $this->template->setDescripcion($this->mostrar_datos_generales());
                     $this->template->setSubTitle(render_subtitle('Región', 'comparativa_region'));
@@ -393,41 +360,35 @@ class Comparativa extends MY_Controller
 //        $this->output->enable_profiler(true);
     }
 
-    public function delegacion_v2()
-    {
+    public function delegacion_v2() {
         $this->load->model('Ranking_model', 'ranking');
         $output['usuario'] = $this->session->userdata('usuario');
 //        pr($output['usuario']);
         $output["texts"] = $this->lang->line('delegacion'); //Mensajes
-        if ($this->input->post('view'))
-        {
+        if ($this->input->post('view')) {
             $filtros_delegacion = array();
             $filtros_delegacion['agrupamiento'] = 1; //activamos el agrupamiento
 //            pr($this->input->post('agrupamiento'));
-            if (is_nivel_central($output['usuario']['grupos']) && $this->input->post('agrupamiento') != null && $this->input->post('agrupamiento') == 0)
-            {
+            if (is_nivel_central($output['usuario']['grupos']) && $this->input->post('agrupamiento') != null && $this->input->post('agrupamiento') == 0) {
                 $filtros_delegacion['agrupamiento'] = 0; // desactivamos el agrupamiento solo si somos nivel central
             }
 
 //            pr($output['usuario']['id_region']);
-            if ($filtros_delegacion['agrupamiento'] == 1)
-            {
+            if ($filtros_delegacion['agrupamiento'] == 1) {
                 $opciones_delegaciones = array(
                     'llave' => 'grupo_delegacion',
                     'valor' => 'nombre_grupo_delegacion',
                     'group' => array('grupo_delegacion', 'nombre_grupo_delegacion'),
                     'orden' => 'nombre_grupo_delegacion'
                 );
-            } else
-            {
+            } else {
                 $opciones_delegaciones = array(
                     'llave' => 'id_delegacion',
                     'valor' => 'nombre',
                     'orden' => 'nombre'
                 );
             }
-            if (is_nivel_tactico($output['usuario']['grupos']) || is_nivel_estrategico($output['usuario']['grupos']))
-            {
+            if (is_nivel_tactico($output['usuario']['grupos']) || is_nivel_estrategico($output['usuario']['grupos'])) {
                 $opciones_delegaciones['condicion'] = 'id_region = ' . $output['usuario']['id_region'] . ' AND ' . "(not (clave_delegacional =  any ('{09,00,39}'::varchar(2)[])))";
             }
 //            pr($opciones_delegaciones);
@@ -442,28 +403,23 @@ class Comparativa extends MY_Controller
             $output['agrupamiento'] = $filtros_delegacion['agrupamiento'];
             $output['niveles'] = $this->comparativa->get_niveles();
             $output['tipo_unidad'] = $output['usuario']['id_tipo_unidad'];
-            if ($this->input->post('nivel') != null)
-            {
+            if ($this->input->post('nivel') != null) {
                 $nivel = $this->input->post('nivel', true);
                 $output['tipos_unidades'] = dropdown_options($this->comparativa->get_tipos_unidades(false, '0', $nivel), 'id_tipo_unidad', 'nombre');
-            } else
-            {
+            } else {
 
                 $output['tipos_unidades'] = [];
             }
-            if ($this->input->post('perfil') != null)
-            {
+            if ($this->input->post('perfil') != null) {
                 $this->load->model('Buscador_model', 'buscador');
                 $filtros_['subcategoria'] = $this->input->post('perfil', true);
                 $output['subperfiles'] = dropdown_options($this->buscador->get_grupos_categorias($filtros_), 'id_grupo_categoria', 'nombre');
-            } else
-            {
+            } else {
                 $output['subperfiles'] = [];
             }
             $output['periodos'] = dropdown_options($this->ranking->get_periodos(), 'periodo', 'periodo');
             $output['reportes'] = $this->comparativa->get_tipos_reportes();
-            switch ($this->input->post('view', true))
-            {
+            switch ($this->input->post('view', true)) {
                 case 1:
                     $vista = 'delegacion_tipo_curso';
                     break;
@@ -473,17 +429,14 @@ class Comparativa extends MY_Controller
             }
             $output['vista'] = $this->load->view('comparative/' . $vista, $output, true);
         }
-        if ($this->input->post('tipo_comparativa'))
-        {
+        if ($this->input->post('tipo_comparativa')) {
             $filtros = $this->input->post();
-            if (is_nivel_operacional($output['usuario']['grupos']) || is_nivel_tactico($output['usuario']['grupos']))
-            {
+            if (is_nivel_operacional($output['usuario']['grupos']) || is_nivel_tactico($output['usuario']['grupos'])) {
                 $filtros['region'] = $output['usuario']['id_region'];
                 $filtros['delegacion1'] = $output['usuario']['grupo_delegacion'];
             }
             $filtros['agrupamiento'] = 1;
-            if (is_nivel_central($output['usuario']['grupos']) && $this->input->post('agrupamiento') != null && $this->input->post('agrupamiento', true) == 0)
-            {
+            if (is_nivel_central($output['usuario']['grupos']) && $this->input->post('agrupamiento') != null && $this->input->post('agrupamiento', true) == 0) {
                 $filtros['agrupamiento'] = 0;
             }
             $output['datos'] = $datos = $this->comparativa->get_comparar_delegacion($filtros);
@@ -491,11 +444,9 @@ class Comparativa extends MY_Controller
             $output['grafica'] = $this->load->view('comparative/grafica.tpl.php', $output, true);
         }
 
-        if ($this->input->is_ajax_request())
-        {
+        if ($this->input->is_ajax_request()) {
             echo $output['vista'];
-        } else
-        {
+        } else {
             $output['comparativas'] = $this->comparativa->get_tipos_comparativas();
             $this->template->setTitle($output["texts"]["title"]);
             $this->template->setSubTitle(render_subtitle($output["texts"]["subtitle"], 'comparativa_delegaciones'));

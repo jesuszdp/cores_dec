@@ -54,10 +54,12 @@ function valida_filtros(formulario) {
     var valido = false
     switch (formulario) {
         case 'tipo_curso':
-            valido = valida_filtros_aux(['tipo_curso', 'tipo_unidad', 'periodo']);
+//            valido = valida_filtros_aux(['tipo_curso', 'tipo_unidad', 'periodo']);
+            valido = valida_filtros_aux(['tipo_curso', 'periodo']);
             break;
         case 'perfil':
-            valido = valida_filtros_aux(['subperfil', 'tipo_unidad', 'periodo']);
+            valido = valida_filtros_aux(['subperfil', 'periodo']);
+//            valido = valida_filtros_aux(['subperfil', 'tipo_unidad', 'periodo']);
             break;
     }
     return valido;

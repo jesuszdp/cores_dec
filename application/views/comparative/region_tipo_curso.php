@@ -84,7 +84,7 @@ echo form_open('comparativa/region', array('id' => 'form_region'));
 
     <div class="col-md-4">
         <div class="input-group input-group-sm">
-            <span class="input-group-addon">*Tipo de unidad:</span>
+            <span class="input-group-addon">Tipo de unidad:</span>
             <?php
             $tu = array(
                 'class' => 'form-control  form-control input-sm',
